@@ -3,6 +3,7 @@ const path = require("path");
 const mongoose = require("mongoose");
 const methodOverride = require("method-override");
 const Campground = require("./models/campground");
+const ejsMate = require("ejs-mate");
 
 //DB connection through mongoose ODM
 main()
@@ -18,6 +19,8 @@ const app = express();
 const port = 3000;
 
 app.set("view engine", "ejs");
+app.engine("ejs", ejsMate);
+
 app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
