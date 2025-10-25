@@ -2,16 +2,16 @@
 <a href="/campgrounds">Back to all campgrounds</a>
 <h1><%= campground.title %></h1>
 <h2><%= campground.location %></h2>
-<p>
-    <form
+<img src="<%= campground.image %>" />
+<p><%= campground.description %></p>
+<div class="py-2">
+  <form
     action="/campgrounds/<%= campground._id %>?_method=DELETE"
     method="POST"
-    >
-        <button style="text-decoration-color: red">
-            Delete campground
-        </button>
-    </form>
-</p>
+  >
+    <button>Delete campground</button>
+  </form>
+</div>
 <p>
-    <a href="/campgrounds/<%= campground._id %>/edit">Edit campground</a>
+  <a href="/campgrounds/<%= campground._id %>/edit">Edit campground</a>
 </p>
