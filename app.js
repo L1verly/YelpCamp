@@ -2,9 +2,10 @@ const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose");
 const methodOverride = require("method-override");
+const ExpressError = require("./utils/ExpressError");
 const Campground = require("./models/campground");
 const ejsMate = require("ejs-mate");
-
+const joi = require("joi");
 //DB connection through mongoose ODM
 main()
   .then(() => console.log("DB Connected"))
@@ -43,6 +44,22 @@ app.get("/campgrounds/new", async (req, res) => {
 });
 
 app.post("/campgrounds", async (req, res) => {
+  // if (!req.body.campground)
+  //   throw new ExpressError("Invalid Campground Data", 400);
+  const campgroundSchema = joi
+    .object({
+      title: joi.string().required(),
+      image: joi.string().required(),
+      price: joi.number().required().min(0),
+      description: joi.string().required(),
+      location: joi.string().required(),
+    })
+    .required();
+  const result = campgroundSchema.validate(req.body);
+  if (result.error) {
+    const msg = result.error.details.map((el) => el.message).join(",");
+    throw new ExpressError(msg, 400);
+  }
   const campground = new Campground(req.body.campground);
   await campground.save();
   res.redirect(`/campgrounds/${campground._id}`);
@@ -72,10 +89,19 @@ app.put("/campgrounds/:id", async (req, res) => {
 
 app.delete("/campgrounds/:id", async (req, res) => {
   const { id } = req.params;
-  const campground = await Campground.findByIdAndDelete(
-    id,
-    req.body.campground,
-    { runValidators: true, new: true }
-  );
+  await Campground.findByIdAndDelete(id, req.body.campground, {
+    runValidators: true,
+    new: true,
+  });
   res.redirect(`/campgrounds`);
+});
+
+app.all(/(.*)/, (req, res, next) => {
+  next(new ExpressError("Page Not Found", 404));
+});
+
+app.use((err, req, res, next) => {
+  const { statusCode = 500 } = err;
+  if (!err.message) err.message = "Something went wrong!";
+  res.status(statusCode).render("error", { err });
 });
