@@ -3,13 +3,12 @@ const router = express.Router();
 const users = require("../controllers/users");
 const { authenticate, storeReturnTo } = require("../middleware");
 
-router.get("/register", users.registerForm);
+router.route("/register").get(users.registerForm).post(users.register);
 
-router.post("/register", users.register);
-
-router.get("/login", users.loginForm);
-
-router.post("/login", storeReturnTo, authenticate, users.login);
+router
+  .route("/login")
+  .get(users.loginForm)
+  .post(storeReturnTo, authenticate, users.login);
 
 router.get("/logout", users.logout);
 
