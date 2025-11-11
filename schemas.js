@@ -3,17 +3,16 @@ const campgroundSchema = joi.object({
   campground: joi
     .object({
       title: joi.string().required(),
-      images: joi
-        .object({
-          url: joi.string(),
-          filename: joi.string(),
-        })
-        .required(),
+      images: joi.object({
+        url: joi.string(),
+        filename: joi.string(),
+      }),
       price: joi.number().required().min(0),
       description: joi.string().required(),
       location: joi.string().required(),
     })
     .required(),
+  deleteImages: joi.array(),
 });
 
 module.exports.campgroundSchema = campgroundSchema;

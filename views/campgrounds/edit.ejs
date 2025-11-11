@@ -7,12 +7,14 @@
       method="POST"
       novalidate
       class="needs-validation"
+      enctype="multipart/form-data"
     >
+      <!-- Title -->
       <div class="mb-3 form-floating">
         <input
+          class="form-control"
           type="text"
           id="title"
-          class="form-control"
           name="campground[title]"
           placeholder="Title"
           value="<%= campground.title %>"
@@ -21,6 +23,7 @@
         <label class="form-label" for="title">Title</label>
         <div class="valid-feedback">Looks good!</div>
       </div>
+      <!-- Location -->
       <div class="mb-3 form-floating">
         <input
           class="form-control"
@@ -34,23 +37,40 @@
         <label class="form-label" for="location">Location</label>
         <div class="valid-feedback">Looks good!</div>
       </div>
-      <div class="mb-3 form-floating">
+    <!-- Add Images -->
+      <div class="mb-3 input-group">
+        <label class="input-group-text col-4" for="images">Add images:</label>
         <input
-          class="form-control"
-          type="text"
-          id="image"
-          name="campground[image]"
-          placeholder="Image URL"
-          value="<%= campground.image %>"
-          required
+          class="form-control visually-hidden"
+          type="file"
+          id="images"
+          name="campground[images]"
+          onchange="showInputFiles(this)"
+          multiple
         />
-        <label class="form-label" for="image">Image URL</label>
+        <button 
+          class="btn btn-primary col-8" 
+          type="button"
+          onclick="document.getElementById('images').click()">Choose Files 
+        </button>
         <div class="valid-feedback">Looks good!</div>
       </div>
+    <!-- Delete Images -->
+      <div class="mb-3 input-group">
+        <div class="form-label w-100">Delete images:</div>
+          <% campground.images.forEach((img, i)=>{ %>
+          <div class="col-6">
+            <div class="form-check-inline">
+              <img src="<%= img.url %>" class="img-thumbnail" />
+              <input type="checkbox" name="deleteImages[]" id="img-<%= i %>" value="<%= img.filename %>">
+            </div>
+          </div>
+          <% }) %>
+      </div>
+    <!-- Price -->
       <div class="mb-3">
-        <label class="form-label" for="price">Price:</label>
         <div class="input-group">
-          <span class="input-group-text" id="price-label">$</span>
+          <span class="input-group-text" id="price-label">Price:</span>
           <input
             class="form-control"
             type="number"
@@ -60,9 +80,11 @@
             aria-describedby="price-label"
             required
           />
+          <span class="input-group-text" id="price-label">$</span>
           <div class="valid-feedback">Looks good!</div>
         </div>
       </div>
+      <!-- Description -->
       <div class="mb-3 form-floating">
         <textarea
           class="form-control h-100"

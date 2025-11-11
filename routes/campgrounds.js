@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const campgrounds = require("../controllers/campgrounds");
 const { isLoggedIn, isAuthor, validateCampground } = require("../middleware");
-const upload = require("../cloudinary");
+const { upload } = require("../cloudinary");
 
 router
   .route("/")
@@ -19,7 +19,13 @@ router.get("/new", isLoggedIn, campgrounds.newForm);
 router
   .route("/:id")
   .get(campgrounds.showOne)
-  .put(isLoggedIn, isAuthor, validateCampground, campgrounds.updateOne)
+  .put(
+    isLoggedIn,
+    isAuthor,
+    upload.array("campground[images]"),
+    validateCampground,
+    campgrounds.updateOne
+  )
   .delete(isLoggedIn, isAuthor, campgrounds.deleteOne);
 
 router.get("/:id/edit", isLoggedIn, isAuthor, campgrounds.editForm);
