@@ -9,6 +9,7 @@
       class="needs-validation"
       enctype="multipart/form-data"
     >
+    <!-- Title -->
       <div class="mb-3 form-floating">
         <input
           class="form-control"
@@ -21,6 +22,7 @@
         <label class="form-label" for="title">Title</label>
         <div class="valid-feedback">Looks good!</div>
       </div>
+    <!-- Location -->
       <div class="mb-3 form-floating">
         <input
           class="form-control"
@@ -33,45 +35,40 @@
         <label class="form-label" for="location">Location</label>
         <div class="valid-feedback">Looks good!</div>
       </div>
-      <div class="mb-3 form-floating">
+    <!-- Image -->
+      <div class="mb-3 input-group">
+        <label class="input-group-text" for="images">Images:</label>
         <input
           class="form-control"
           type="file"
-          id="image"
-          name="campground[image]"
-          placeholder="Image URL"
+          id="images"
+          name="campground[images]"
+          placeholder="Image"
           required
+          multiple
         />
-        <label class="form-label" for="image">Image URL</label>
         <div class="valid-feedback">Looks good!</div>
-      <!-- <div class="mb-3 form-floating">
-        <input
-          class="form-control"
-          type="text"
-          id="image"
-          name="campground[image]"
-          placeholder="Image URL"
-          required
-        />
-        <label class="form-label" for="image">Image URL</label>
-        <div class="valid-feedback">Looks good!</div> -->
       </div>
+    <!-- Price -->
       <div class="mb-3">
         <label class="form-label" for="price">Price:</label>
         <div class="input-group">
-          <span class="input-group-text" id="price-label">$</span>
+          <span class="input-group-text" id="price-label">Price:</span>
           <input
             class="form-control"
             type="number"
+            step=".01"
             id="price"
             name="campground[price]"
             placeholder="0"
             aria-describedby="price-label"
             required
           />
+          <span class="input-group-text" id="price-label">$</span>
           <div class="valid-feedback">Looks good!</div>
         </div>
       </div>
+    <!-- Description -->
       <div class="mb-3 form-floating">
         <textarea
           class="form-control h-100"
@@ -83,8 +80,7 @@
           required
         ></textarea>
         <label class="form-label form-floating" for="description"
-          >Description</label
-        >
+          >Description</label>
         <div class="valid-feedback">Looks good!</div>
       </div>
       <div class="mb-3">
