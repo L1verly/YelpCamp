@@ -7,6 +7,7 @@
       method="POST"
       novalidate
       class="needs-validation"
+      enctype="multipart/form-data"
     >
       <div class="mb-3 form-floating">
         <input
@@ -35,7 +36,7 @@
       <div class="mb-3 form-floating">
         <input
           class="form-control"
-          type="text"
+          type="file"
           id="image"
           name="campground[image]"
           placeholder="Image URL"
@@ -43,6 +44,17 @@
         />
         <label class="form-label" for="image">Image URL</label>
         <div class="valid-feedback">Looks good!</div>
+      <!-- <div class="mb-3 form-floating">
+        <input
+          class="form-control"
+          type="text"
+          id="image"
+          name="campground[image]"
+          placeholder="Image URL"
+          required
+        />
+        <label class="form-label" for="image">Image URL</label>
+        <div class="valid-feedback">Looks good!</div> -->
       </div>
       <div class="mb-3">
         <label class="form-label" for="price">Price:</label>
