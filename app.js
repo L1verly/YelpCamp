@@ -8,6 +8,7 @@ const ejsMate = require("ejs-mate");
 const session = require("express-session");
 const flash = require("connect-flash");
 const ExpressError = require("./utils/ExpressError");
+const sanitizeV5 = require("./utils/mongoSanitizeV5");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 
@@ -31,11 +32,13 @@ const port = 3000;
 
 app.set("view engine", "ejs");
 app.engine("ejs", ejsMate);
+app.set("query parser", "extended");
 
 app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
+app.use(sanitizeV5());
 
 const sessionConfig = {
   secret: "verysecretsecretkey",

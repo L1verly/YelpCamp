@@ -1,17 +1,19 @@
 mapboxgl.accessToken = mapToken;
 const map = new mapboxgl.Map({
-  container: "map",
+  container: "cluster-map",
   // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
   style: "mapbox://styles/mapbox/standard",
   config: {
     basemap: {
       theme: "monochrome",
-      lightPreset: "night",
     },
   },
   center: [13.412627640393083, 48.808125872483345],
   zoom: 3.2,
 });
+
+// add controls for a map
+map.addControl(new mapboxgl.NavigationControl(), "top-right");
 
 map.on("load", () => {
   // Add a new source from our GeoJSON data and
