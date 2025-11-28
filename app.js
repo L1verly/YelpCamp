@@ -34,7 +34,7 @@ async function main() {
 
 //Express app setup
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.set("view engine", "ejs");
 app.engine("ejs", ejsMate);
@@ -131,7 +131,7 @@ app.use((req, res, next) => {
 });
 
 app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+  console.log(`Server is running on port ${port}`);
 });
 
 //Routes
