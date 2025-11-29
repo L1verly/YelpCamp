@@ -1,4 +1,5 @@
-if (process.env.NODE_ENV !== "production") require("dotenv").config();
+const isProduction = process.env.NODE_ENV === "production";
+if (!isProduction) require("dotenv").config();
 
 const express = require("express");
 const path = require("path");
@@ -6,6 +7,7 @@ const mongoose = require("mongoose");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const session = require("express-session");
+const MongoStore = require("connect-mongo");
 const flash = require("connect-flash");
 const ExpressError = require("./utils/ExpressError");
 const sanitizeV5 = require("./utils/mongoSanitizeV5");
@@ -17,11 +19,10 @@ const reviewRoutes = require("./routes/reviews");
 const userRoutes = require("./routes/users");
 const User = require("./models/user");
 const helmet = require("helmet");
-const MongoStore = require("connect-mongo");
-const dbUri =
-  process.env.NODE_ENV === "production"
-    ? process.env.DB_URI
-    : "mongodb://127.0.0.1:27017/YelpCampDB";
+
+const dbUri = isProduction
+  ? process.env.DB_URI
+  : "mongodb://127.0.0.1:27017/YelpCampDB";
 
 //DB connection through mongoose ODM
 main()
@@ -39,6 +40,7 @@ const port = process.env.PORT || 3000;
 app.set("view engine", "ejs");
 app.engine("ejs", ejsMate);
 app.set("query parser", "extended");
+app.set("trust proxy", 1);
 
 app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
@@ -107,7 +109,7 @@ const sessionConfig = {
   saveUninitialized: true,
   cookie: {
     httpOnly: true,
-    secure: true,
+    secure: isProduction ? true : false,
     expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
     maxAge: 1000 * 60 * 60 * 24 * 7,
   },
